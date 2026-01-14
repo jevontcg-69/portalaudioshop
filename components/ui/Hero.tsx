@@ -26,10 +26,10 @@ export const Hero = () => {
                 </p>
 
                 <div className="flex flex-col items-center justify-center gap-6 sm:flex-row">
-                    <Button variant="primary" size="lg">
+                    <Button variant="primary" size="lg" href="/products">
                         Explore Collection
                     </Button>
-                    <Button variant="outline" size="lg">
+                    <Button variant="outline" size="lg" href="/about">
                         Our Story
                     </Button>
                 </div>

@@ -27,6 +27,7 @@ export default function DealersPage() {
     });
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [editingDealer, setEditingDealer] = useState<Dealer | null>(null);
 
     useEffect(() => {
         fetchDealers();
@@ -44,20 +45,56 @@ export default function DealersPage() {
         }
     };
 
+    const handleEdit = (dealer: any) => {
+        setEditingDealer(dealer);
+        setFormData({
+            name: dealer.name,
+            address: dealer.address || "",
+            city: dealer.city,
+            region: dealer.region,
+            phone: dealer.phone || "",
+            email: dealer.email || "",
+            status: dealer.status,
+        });
+        setShowForm(true);
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this dealer?")) return;
+
+        try {
+            const res = await fetch(`/api/dealers/${id}`, {
+                method: "DELETE",
+            });
+
+            if (res.ok) {
+                setSuccess("Dealer deleted successfully!");
+                fetchDealers();
+            } else {
+                setError("Failed to delete dealer");
+            }
+        } catch (err) {
+            setError("An error occurred during deletion");
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
         setSuccess("");
 
         try {
-            const res = await fetch("/api/dealers", {
-                method: "POST",
+            const url = editingDealer ? `/api/dealers/${editingDealer.id}` : "/api/dealers";
+            const method = editingDealer ? "PUT" : "POST";
+
+            const res = await fetch(url, {
+                method,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
             });
 
             if (res.ok) {
-                setSuccess("Dealer created successfully!");
+                setSuccess(editingDealer ? "Dealer updated successfully!" : "Dealer created successfully!");
                 setFormData({
                     name: "",
                     address: "",
@@ -68,10 +105,11 @@ export default function DealersPage() {
                     status: "active",
                 });
                 setShowForm(false);
+                setEditingDealer(null);
                 fetchDealers();
             } else {
                 const data = await res.json();
-                setError(data.error || "Failed to create dealer");
+                setError(data.error || "Failed to save dealer");
             }
         } catch (err) {
             setError("An error occurred");
@@ -99,7 +137,21 @@ export default function DealersPage() {
                     </h1>
                 </div>
                 <button
-                    onClick={() => setShowForm(!showForm)}
+                    onClick={() => {
+                        if (showForm) {
+                            setEditingDealer(null);
+                            setFormData({
+                                name: "",
+                                address: "",
+                                city: "",
+                                region: "",
+                                phone: "",
+                                email: "",
+                                status: "active",
+                            });
+                        }
+                        setShowForm(!showForm);
+                    }}
                     className="border border-gold px-6 py-3 text-sm font-medium tracking-widest text-gold uppercase hover:bg-gold hover:text-black transition-all"
                 >
                     {showForm ? "Cancel" : "+ Add Dealer"}
@@ -122,7 +174,7 @@ export default function DealersPage() {
             {showForm && (
                 <div className="mb-8 border border-white/5 bg-surface/10 p-6">
                     <h2 className="text-lg font-semibold text-white mb-6">
-                        Add New Dealer
+                        {editingDealer ? `Edit Dealer: ${editingDealer.name}` : "Add New Dealer"}
                     </h2>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -241,7 +293,7 @@ export default function DealersPage() {
                             type="submit"
                             className="border border-gold px-8 py-3 text-sm font-medium tracking-widest text-gold uppercase hover:bg-gold hover:text-black transition-all"
                         >
-                            Add Dealer
+                            {editingDealer ? "Update Dealer" : "Add Dealer"}
                         </button>
                     </form>
                 </div>
@@ -260,8 +312,8 @@ export default function DealersPage() {
                             </h3>
                             <span
                                 className={`inline-flex px-2 py-1 text-xs font-semibold rounded uppercase ${dealer.status === "active"
-                                        ? "bg-green-500/20 text-green-400"
-                                        : "bg-red-500/20 text-red-400"
+                                    ? "bg-green-500/20 text-green-400"
+                                    : "bg-red-500/20 text-red-400"
                                     }`}
                             >
                                 {dealer.status}
@@ -277,6 +329,20 @@ export default function DealersPage() {
                         {dealer.email && (
                             <p className="text-sm text-zinc-400">✉️ {dealer.email}</p>
                         )}
+                        <div className="mt-4 pt-4 border-t border-white/5 flex gap-3">
+                            <button
+                                onClick={() => handleEdit(dealer)}
+                                className="text-gold hover:text-white transition-colors text-[10px] uppercase tracking-widest"
+                            >
+                                Edit
+                            </button>
+                            <button
+                                onClick={() => handleDelete(dealer.id)}
+                                className="text-red-500 hover:text-red-400 transition-colors text-[10px] uppercase tracking-widest"
+                            >
+                                Delete
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>

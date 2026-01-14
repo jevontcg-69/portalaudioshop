@@ -23,26 +23,33 @@ export default function ContactPage() {
                 body: JSON.stringify(formData),
             });
 
-            // 2. Send to Formspree for email notification
-            const formspreeKey = process.env.NEXT_PUBLIC_FORMSPREE_KEY;
-            let formspreeSuccess = true;
-
-            if (formspreeKey) {
-                const formspreeResponse = await fetch(`https://formspree.io/f/${formspreeKey}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "Accept": "application/json" },
-                    body: JSON.stringify(formData),
-                });
-                formspreeSuccess = formspreeResponse.ok;
-            }
-
-            if (localResponse.ok && formspreeSuccess) {
+            if (localResponse.ok) {
                 setStatus("success");
                 setFormData({ name: "", email: "", phone: "", message: "" });
+
+                // Silent background notification - Now using ID correctly
+                const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_KEY;
+                if (formspreeId && formspreeId.length > 5 && !formspreeId.includes('YOUR_')) {
+                    // Extract ID if user pasted full URL by mistake
+                    const cleanId = formspreeId.includes('formspree.io')
+                        ? formspreeId.split('/').pop()
+                        : formspreeId;
+
+                    fetch(`https://formspree.io/f/${cleanId}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                        body: JSON.stringify(formData),
+                    }).then(res => {
+                        if (!res.ok) console.warn("Formspree server returned error:", res.status);
+                    }).catch(err => {
+                        console.warn("Formspree notification blocked/failed (likely network or ad-blocker) but inquiry is saved.");
+                    });
+                }
             } else {
                 setStatus("error");
             }
         } catch (error) {
+            console.error("Submission error:", error);
             setStatus("error");
         }
     };

@@ -83,6 +83,7 @@ CREATE TABLE blog_posts (
   content TEXT NOT NULL,
   excerpt TEXT,
   featured_image TEXT,
+  instagram_url TEXT,
   author VARCHAR(255),
   published BOOLEAN DEFAULT FALSE,
   published_at TIMESTAMP WITH TIME ZONE,

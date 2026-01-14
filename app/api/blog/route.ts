@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { supabase, supabaseAdmin } from '@/lib/supabase';
+import { requireAdmin } from '@/lib/auth';
 
 // GET /api/blog - Get all blog posts
 export async function GET(request: NextRequest) {
@@ -34,10 +35,13 @@ export async function GET(request: NextRequest) {
 
 // POST /api/blog - Create a new blog post (admin only)
 export async function POST(request: NextRequest) {
+    const auth = await requireAdmin();
+    if (!auth.authorized) return auth.response;
+
     try {
         const body = await request.json();
 
-        const { data, error } = await supabase
+        const { data, error } = await supabaseAdmin
             .from('blog_posts')
             .insert([body])
             .select()

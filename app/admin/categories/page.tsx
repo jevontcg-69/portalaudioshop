@@ -20,6 +20,7 @@ export default function CategoriesPage() {
     });
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
     useEffect(() => {
         fetchCategories();
@@ -52,26 +53,59 @@ export default function CategoriesPage() {
         });
     };
 
+    const handleEdit = (category: Category) => {
+        setEditingCategory(category);
+        setFormData({
+            name: category.name,
+            slug: category.slug,
+            description: category.description || "",
+        });
+        setShowForm(true);
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this category?")) return;
+
+        try {
+            const res = await fetch(`/api/categories/${id}`, {
+                method: "DELETE",
+            });
+
+            if (res.ok) {
+                setSuccess("Category deleted successfully!");
+                fetchCategories();
+            } else {
+                setError("Failed to delete category");
+            }
+        } catch (err) {
+            setError("An error occurred during deletion");
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
         setSuccess("");
 
         try {
-            const res = await fetch("/api/categories", {
-                method: "POST",
+            const url = editingCategory ? `/api/categories/${editingCategory.id}` : "/api/categories";
+            const method = editingCategory ? "PUT" : "POST";
+
+            const res = await fetch(url, {
+                method,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
             });
 
             if (res.ok) {
-                setSuccess("Category created successfully!");
+                setSuccess(editingCategory ? "Category updated successfully!" : "Category created successfully!");
                 setFormData({ name: "", slug: "", description: "" });
                 setShowForm(false);
+                setEditingCategory(null);
                 fetchCategories();
             } else {
                 const data = await res.json();
-                setError(data.error || "Failed to create category");
+                setError(data.error || "Failed to save category");
             }
         } catch (err) {
             setError("An error occurred");
@@ -99,7 +133,13 @@ export default function CategoriesPage() {
                     </h1>
                 </div>
                 <button
-                    onClick={() => setShowForm(!showForm)}
+                    onClick={() => {
+                        if (showForm) {
+                            setEditingCategory(null);
+                            setFormData({ name: "", slug: "", description: "" });
+                        }
+                        setShowForm(!showForm);
+                    }}
                     className="border border-gold px-6 py-3 text-sm font-medium tracking-widest text-gold uppercase hover:bg-gold hover:text-black transition-all"
                 >
                     {showForm ? "Cancel" : "+ Add Category"}
@@ -122,7 +162,7 @@ export default function CategoriesPage() {
             {showForm && (
                 <div className="mb-8 border border-white/5 bg-surface/10 p-6">
                     <h2 className="text-lg font-semibold text-white mb-6">
-                        Create New Category
+                        {editingCategory ? `Edit Category: ${editingCategory.name}` : "Create New Category"}
                     </h2>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
@@ -174,7 +214,7 @@ export default function CategoriesPage() {
                             type="submit"
                             className="border border-gold px-8 py-3 text-sm font-medium tracking-widest text-gold uppercase hover:bg-gold hover:text-black transition-all"
                         >
-                            Create Category
+                            {editingCategory ? "Update Category" : "Create Category"}
                         </button>
                     </form>
                 </div>
@@ -198,6 +238,20 @@ export default function CategoriesPage() {
                                 {category.description}
                             </p>
                         )}
+                        <div className="mt-4 pt-4 border-t border-white/5 flex gap-3">
+                            <button
+                                onClick={() => handleEdit(category)}
+                                className="text-gold hover:text-white transition-colors text-[10px] uppercase tracking-widest"
+                            >
+                                Edit
+                            </button>
+                            <button
+                                onClick={() => handleDelete(category.id)}
+                                className="text-red-500 hover:text-red-400 transition-colors text-[10px] uppercase tracking-widest"
+                            >
+                                Delete
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>

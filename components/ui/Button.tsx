@@ -1,10 +1,9 @@
-"use client";
-
-import React from "react";
+import Link from "next/link";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: "primary" | "outline" | "ghost";
     size?: "sm" | "md" | "lg";
+    href?: string;
 }
 
 export const Button = ({
@@ -12,6 +11,7 @@ export const Button = ({
     variant = "primary",
     size = "md",
     className = "",
+    href,
     ...props
 }: ButtonProps) => {
     const baseStyles = "inline-flex items-center justify-center font-medium transition-all duration-300 rounded-sm focus:outline-none disabled:opacity-50 disabled:pointer-events-none";
@@ -28,9 +28,19 @@ export const Button = ({
         lg: "px-10 py-4 text-base tracking-widest uppercase",
     };
 
+    const styles = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
+
+    if (href) {
+        return (
+            <Link href={href} className={styles}>
+                {children}
+            </Link>
+        );
+    }
+
     return (
         <button
-            className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+            className={styles}
             {...props}
         >
             {children}

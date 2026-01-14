@@ -158,26 +158,26 @@ export default function ContactPage() {
                             <div>
                                 <h3 className="text-zinc-500 text-sm mb-2 uppercase tracking-wider">Email</h3>
                                 <a href="mailto:info@portalaudio.id" className="text-gold hover:text-gold/80 transition-colors">
-                                    info@portalaudio.id
+                                    portalaudioshop@gmail.com
                                 </a>
                             </div>
 
                             <div>
                                 <h3 className="text-zinc-500 text-sm mb-2 uppercase tracking-wider">Phone</h3>
                                 <a href="tel:+62211234567" className="text-zinc-300 hover:text-gold transition-colors">
-                                    +62 21 1234 5678
+                                    +62 816-1956-046
                                 </a>
                             </div>
 
                             <div>
                                 <h3 className="text-zinc-500 text-sm mb-2 uppercase tracking-wider">WhatsApp</h3>
                                 <a
-                                    href="https://wa.me/6281234567890"
+                                    href="https://wa.me/628161956046"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-gold hover:text-gold/80 transition-colors"
                                 >
-                                    +62 812 3456 7890
+                                    +62 816-1956-046
                                 </a>
                             </div>
 

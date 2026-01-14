@@ -1,10 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 export const Navbar = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const navLinks = [
+        { name: "Products", href: "/products" },
+        { name: "About", href: "/about" },
+        { name: "Dealers", href: "/dealers" },
+        { name: "Contact", href: "/contact" },
+    ];
+
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/80 backdrop-blur-md">
             <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 md:px-12">
@@ -19,26 +28,47 @@ export const Navbar = () => {
                 </Link>
 
                 <div className="hidden items-center gap-12 md:flex">
-                    <Link href="/products" className="text-xs font-medium tracking-[0.2em] text-zinc-400 uppercase transition-colors hover:text-gold">
-                        Products
-                    </Link>
-                    <Link href="/about" className="text-xs font-medium tracking-[0.2em] text-zinc-400 uppercase transition-colors hover:text-gold">
-                        About
-                    </Link>
-                    <Link href="/dealers" className="text-xs font-medium tracking-[0.2em] text-zinc-400 uppercase transition-colors hover:text-gold">
-                        Dealers
-                    </Link>
-                    <Link href="/contact" className="text-xs font-medium tracking-[0.2em] text-zinc-400 uppercase transition-colors hover:text-gold">
-                        Contact
-                    </Link>
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.name}
+                            href={link.href}
+                            className="text-xs font-medium tracking-[0.2em] text-zinc-400 uppercase transition-colors hover:text-gold"
+                        >
+                            {link.name}
+                        </Link>
+                    ))}
                 </div>
 
-                <button className="md:hidden text-gold">
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="md:hidden text-gold focus:outline-none"
+                    aria-label="Toggle menu"
+                >
                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16m-7 6h7" />
+                        {isOpen ? (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                        ) : (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16m-7 6h7" />
+                        )}
                     </svg>
                 </button>
             </div>
+
+            {/* Mobile Menu Overlay */}
+            {isOpen && (
+                <div className="md:hidden border-t border-white/5 bg-black px-6 py-8 flex flex-col gap-6 animate-in slide-in-from-top duration-300">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.name}
+                            href={link.href}
+                            onClick={() => setIsOpen(false)}
+                            className="text-sm font-medium tracking-[0.3em] text-zinc-300 uppercase transition-colors hover:text-gold"
+                        >
+                            {link.name}
+                        </Link>
+                    ))}
+                </div>
+            )}
         </nav>
     );
 };

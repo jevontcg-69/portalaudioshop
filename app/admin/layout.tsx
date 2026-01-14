@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 export default function AdminLayout({
@@ -21,13 +22,14 @@ export default function AdminLayout({
 function AdminLayoutContent({ children }: { children: React.ReactNode }) {
     const { data: session, status } = useSession();
     const router = useRouter();
+    const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
-        if (status === "unauthenticated") {
+        if (status === "unauthenticated" && pathname !== "/admin/login") {
             router.push("/admin/login");
         }
-    }, [status, router]);
+    }, [status, router, pathname]);
 
     if (status === "loading") {
         return (
@@ -35,6 +37,11 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
                 <div className="text-gold">Loading...</div>
             </div>
         );
+    }
+
+    // Allow the login page to be rendered without a session
+    if (pathname === "/admin/login") {
+        return <>{children}</>;
     }
 
     if (!session) {

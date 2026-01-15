@@ -4,6 +4,8 @@ import Script from "next/script";
 import { supabase } from "@/lib/supabase";
 import BlogCard from "@/components/BlogCard";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   // Fetch featured products
   const { data: products } = await supabase

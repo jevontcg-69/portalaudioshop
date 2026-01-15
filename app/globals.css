@@ -19,6 +19,8 @@
   --font-mono: var(--font-geist-mono);
 
   --animate-gold-shimmer: gold-shimmer 2s ease-in-out infinite;
+  --animate-soft-float: soft-float 6s ease-in-out infinite;
+  --animate-reveal-up: reveal-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes gold-shimmer {
@@ -33,6 +35,34 @@
   100% {
     opacity: 0.8;
   }
+}
+
+@keyframes soft-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes reveal-up {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-hidden {
+  opacity: 0;
 }
 
 body {

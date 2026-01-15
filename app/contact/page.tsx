@@ -150,21 +150,26 @@ export default function ContactPage() {
                         <div className="space-y-8">
                             <div>
                                 <h3 className="text-zinc-500 text-sm mb-2 uppercase tracking-wider">Address</h3>
-                                <p className="text-zinc-300">
+                                <a
+                                    href="https://www.google.com/maps/search/?api=1&query=Jakarta,Indonesia"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-zinc-300 hover:text-gold transition-colors"
+                                >
                                     Jakarta, Indonesia
-                                </p>
+                                </a>
                             </div>
 
                             <div>
                                 <h3 className="text-zinc-500 text-sm mb-2 uppercase tracking-wider">Email</h3>
-                                <a href="mailto:info@portalaudio.id" className="text-gold hover:text-gold/80 transition-colors">
+                                <a href="mailto:portalaudioshop@gmail.com" className="text-gold hover:text-gold/80 transition-colors">
                                     portalaudioshop@gmail.com
                                 </a>
                             </div>
 
                             <div>
                                 <h3 className="text-zinc-500 text-sm mb-2 uppercase tracking-wider">Phone</h3>
-                                <a href="tel:+62211234567" className="text-zinc-300 hover:text-gold transition-colors">
+                                <a href="tel:+628161956046" className="text-zinc-300 hover:text-gold transition-colors">
                                     +62 816-1956-046
                                 </a>
                             </div>

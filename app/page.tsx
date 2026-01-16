@@ -43,14 +43,14 @@ export default async function Home() {
 
       {/* Heritage / VSS Story Section */}
       <Reveal>
-        <section className="w-full bg-[#050505] py-24 px-6 md:px-12 border-b border-white/5">
+        <section className="w-full bg-[#050505] py-24 px-8 md:px-12 border-b border-white/5">
           <div className="mx-auto max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div>
                 <h2 className="text-xs font-semibold tracking-[0.4em] text-gold uppercase mb-6">The Original VSS</h2>
                 <h3 className="text-4xl font-light tracking-tight text-white mb-8">Pioneering Power <br />Since 2008</h3>
                 <p className="text-zinc-400 text-lg font-light leading-relaxed mb-6">
-                  Engineered by Harrison Labs in Colorado, USA, the <span className="text-gold font-medium">VSS (Voltage Stepup Stabilizer)</span>
+                  Engineered by Harrison Labs in Colorado, USA, the <span className="gold-text font-medium">VSS (Voltage Stepup Stabilizer)</span>{" "}
                   defined a new category in car audio competition. While others have attempted to follow, the real VSS
                   remains the benchmark for pure, constant current.
                 </p>
@@ -90,7 +90,7 @@ export default async function Home() {
 
       {/* Featured Products / Collections Section */}
       <Reveal>
-        <section className="w-full bg-black py-24 px-6 md:px-12">
+        <section className="w-full bg-black py-24 px-8 md:px-12">
           <div className="mx-auto max-w-7xl">
             <div className="mb-16 flex items-end justify-between border-b border-white/5 pb-8">
               <div>
@@ -138,7 +138,7 @@ export default async function Home() {
 
       {/* Testimonials Section */}
       <Reveal>
-        <section className="w-full bg-[#050505] py-24 px-6 md:px-12 border-y border-white/5">
+        <section className="w-full bg-[#050505] py-24 px-8 md:px-12 border-y border-white/5">
           <div className="mx-auto max-w-7xl">
             <div className="mb-16 text-center">
               <h2 className="text-xs font-semibold tracking-[0.4em] text-gold uppercase mb-4">Voices of Excellence</h2>
@@ -173,7 +173,7 @@ export default async function Home() {
 
       {/* Dealers & Global Network Section */}
       <Reveal>
-        <section className="w-full bg-black py-24 px-6 md:px-12">
+        <section className="w-full bg-black py-24 px-8 md:px-12">
           <div className="mx-auto max-w-7xl">
             <div className="mb-16 border-b border-white/5 pb-8 flex items-end justify-between">
               <div>
@@ -217,7 +217,7 @@ export default async function Home() {
 
       {/* Blog Section */}
       <Reveal>
-        <section className="w-full bg-[#050505] py-24 px-6 md:px-12 border-t border-white/5">
+        <section className="w-full bg-[#050505] py-24 px-8 md:px-12 border-t border-white/5">
           <div className="mx-auto max-w-7xl">
             <div className="mb-16 flex items-end justify-between">
               <div>

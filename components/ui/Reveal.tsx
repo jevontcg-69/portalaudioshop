@@ -36,7 +36,7 @@ export const Reveal = ({ children, delay = 0 }: RevealProps) => {
     return (
         <div
             ref={ref}
-            className={`${isVisible ? "animate-reveal-up" : "reveal-hidden"}`}
+            className={`${isVisible ? "animate-power-reveal" : "reveal-hidden"}`}
             style={{ animationDelay: `${delay}ms` }}
         >
             {children}

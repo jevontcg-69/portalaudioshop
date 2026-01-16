@@ -28,7 +28,7 @@ export const Hero = () => {
 
                 <Reveal delay={200}>
                     <div className="animate-soft-float [animation-duration:8s]">
-                        <h1 className="mb-8 text-6xl font-light tracking-tighter text-white md:text-8xl lg:text-9xl">
+                        <h1 className="mb-8 text-5xl font-light tracking-tighter text-white md:text-8xl lg:text-9xl px-2">
                             UNCOMPROMISED <br />
                             <span className="italic font-serif">POWER.</span>
                         </h1>
